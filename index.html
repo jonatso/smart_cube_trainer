@@ -8,21 +8,28 @@
 <body>
     <h1>Smart Cube Trainer</h1>
     <script type="module" src="bundle.js"></script>
+    <dialog open>
+        <p>Use Chrome on macOS, Windows and Android.
+            You need to enable chrome://flags/#enable-experimental-web-platform-features flag in browser settings.
+            <br />
+            Use Bluefy on iOS/iPadOS.
+            You need to turn on Enable BLE Advertisements option in browser settings.
+            <br />
+            Insert algs, one line each. Press load algs and then connect cube! 🤠</p>
+        <form method="dialog">
+          <button>OK</button>
+        </form>
+      </dialog>
     <canvas id="cubeView" width="400" height="480"></canvas>
+    
     <br />
-    <button id="connectButton"">Connect</button>
-    <button >rest here</button>
-    <p id="userFeedback">
-        Use Chrome on macOS, Windows and Android.
-        You need to enable chrome://flags/#enable-experimental-web-platform-features flag in browser settings.
-        <br />
-        Use Bluefy on iOS/iPadOS.
-        You need to turn on Enable BLE Advertisements option in browser settings.
-        <br />
-        Insert algs, one line each. Press load algs and then connect cube! 🤠
-    </p>
-    <textarea type="text" id="algsInput" placeholder="Enter algorithms here"></textarea> 
+    <button id="connectButton"" hidden>Connect</button>
     <button id="loadAlgs">Load algs</button>
+    <p id="userFeedback">
+        --
+    </p>
+    
+    <textarea type="text" id="algsInput" placeholder="Enter algorithms here" style="height: 300px; width: 209px;"></textarea> 
 
 </body>
 </html>

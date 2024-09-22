@@ -10002,8 +10002,14 @@ const connect = () => __awaiter(void 0, void 0, void 0, function* () {
     });
     yield conn.sendCubeCommand({ type: "REQUEST_FACELETS" });
 });
-document.getElementById("connectButton").addEventListener("click", connect);
-document.getElementById("loadAlgs").addEventListener("click", cube_1.loadAlgsFromInput);
+const connectButton = document.getElementById("connectButton");
+connectButton.addEventListener("click", connect);
+document.getElementById("loadAlgs").addEventListener("click", () => {
+    const isSuccess = (0, cube_1.loadAlgsFromInput)();
+    if (isSuccess) {
+        connectButton.hidden = false;
+    }
+});
 document.addEventListener("keydown", (e) => {
     if (e.code === "Enter")
         (0, cube_1.nextScramble)(currentCube);
@@ -10015,6 +10021,7 @@ document.addEventListener("keydown", (e) => {
     }
 });
 const currentCube = (0, cube_1.getNewCube)();
+(0, cube_1.draw)(currentCube);
 
 },{"./cube":228,"./notifyUser":229,"./turns":230,"gan-web-bluetooth":2}],228:[function(require,module,exports){
 "use strict";
@@ -10047,7 +10054,12 @@ const loadAlgsFromInput = () => {
     algDatabase = algsInputElement.value
         .split("\n")
         .filter((s) => s.trim() != "");
+    if (algDatabase.length == 0) {
+        (0, notifyUser_1.notifyUser)("No algs loaded, try again", 2000);
+        return false;
+    }
     (0, notifyUser_1.notifyUser)(`${algDatabase.length} algs loaded`, 2000);
+    return true;
 };
 exports.loadAlgsFromInput = loadAlgsFromInput;
 var currentAlg = "";
