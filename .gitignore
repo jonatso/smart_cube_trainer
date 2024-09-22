@@ -1,0 +1,3 @@
+# standard yarn ignore
+node_modules
+public/bundle.js

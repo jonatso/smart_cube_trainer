@@ -1,0 +1,18 @@
+{
+  "name": "smart_cube_trainer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "browserify": "^17.0.0",
+    "gan-web-bluetooth": "^3.0.2",
+    "rxjs": "^7.8.1",
+    "tsify": "^5.0.4",
+    "typescript": "^5.6.2",
+    "watchify": "^4.0.0"
+  },
+  "scripts": {
+    "build": "browserify ./src/app.ts -p [ tsify --noImplicitAny ] > ./public/bundle.js",
+    "watch": "watchify ./src/app.ts -p [ tsify --noImplicitAny ] -o ./public/bundle.js"
+  }
+}
