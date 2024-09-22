@@ -5,6 +5,7 @@ import {
     currentAlg,
     getNewCube,
     loadAlgsFromInput,
+    draw,
 } from "./cube";
 import turns from "./turns";
 import { turnsEnum } from "./turns";
@@ -32,13 +33,20 @@ const connect = async () => {
     await conn.sendCubeCommand({ type: "REQUEST_FACELETS" });
 };
 
-(
-    document.getElementById("connectButton") as HTMLButtonElement
-).addEventListener("click", connect);
+const connectButton = document.getElementById(
+    "connectButton"
+) as HTMLButtonElement;
+
+connectButton.addEventListener("click", connect);
 
 (document.getElementById("loadAlgs") as HTMLButtonElement).addEventListener(
     "click",
-    loadAlgsFromInput
+    () => {
+        const isSuccess = loadAlgsFromInput();
+        if (isSuccess) {
+            connectButton.hidden = false;
+        }
+    }
 );
 
 document.addEventListener("keydown", (e) => {
@@ -52,3 +60,5 @@ document.addEventListener("keydown", (e) => {
 });
 
 const currentCube = getNewCube();
+
+draw(currentCube);

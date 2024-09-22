@@ -28,7 +28,12 @@ const loadAlgsFromInput = () => {
         .split("\n")
         .filter((s) => s.trim() != "");
 
+    if (algDatabase.length == 0) {
+        notifyUser("No algs loaded, try again", 2000);
+        return false;
+    }
     notifyUser(`${algDatabase.length} algs loaded`, 2000);
+    return true;
 };
 
 var currentAlg: string = "";
