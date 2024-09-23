@@ -10003,11 +10003,14 @@ const connect = () => __awaiter(void 0, void 0, void 0, function* () {
     yield conn.sendCubeCommand({ type: "REQUEST_FACELETS" });
 });
 const connectButton = document.getElementById("connectButton");
-connectButton.addEventListener("click", connect);
+connectButton.addEventListener("click", () => {
+    connect();
+    connectButton.blur();
+});
 document.getElementById("loadAlgs").addEventListener("click", () => {
     const isSuccess = (0, cube_1.loadAlgsFromInput)();
     if (isSuccess) {
-        connectButton.hidden = false;
+        connectButton.disabled = false;
     }
 });
 document.addEventListener("keydown", (e) => {
@@ -10058,7 +10061,7 @@ const loadAlgsFromInput = () => {
         (0, notifyUser_1.notifyUser)("No algs loaded, try again", 2000);
         return false;
     }
-    (0, notifyUser_1.notifyUser)(`${algDatabase.length} algs loaded`, 2000);
+    (0, notifyUser_1.notifyUser)(`${algDatabase.length} algs loaded, time to connect cube!`, 2000);
     return true;
 };
 exports.loadAlgsFromInput = loadAlgsFromInput;
@@ -10137,7 +10140,7 @@ function clearAndDrawCurrentCube(cube) {
 function nextScramble(cube) {
     exports.currentAlg = currentAlg = algDatabase[Math.floor(Math.random() * algDatabase.length)];
     setupAlg(cube, currentAlg, true);
-    (0, notifyUser_1.notifyUser)("--");
+    (0, notifyUser_1.notifyUser)("");
 }
 const canvas = document.getElementById("cubeView");
 const ctx = canvas.getContext("2d");
@@ -10232,7 +10235,7 @@ function notifyUser(message, duration) {
     userFeedbackElement.innerHTML = message;
     if (duration) {
         setTimeout(() => {
-            userFeedbackElement.innerHTML = "--";
+            userFeedbackElement.innerHTML = "";
         }, duration);
     }
 }
@@ -10420,7 +10423,7 @@ exports.default = {
     y,
     z,
     M,
-    E: (cube) => E(cube),
+    E,
     S,
     r,
     u,
