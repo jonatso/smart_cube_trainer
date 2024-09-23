@@ -4,4 +4,4 @@ Simple smart cube alg trainer. This project is based upon an old alg trainer I m
 
 Needs to transpile typescript to bundle.js, use yarn watch/yarn build.
 
-<img width="425" alt="image" src="https://github.com/user-attachments/assets/40c561e5-d989-4fbf-b377-726b804096bd">
+<img width="1440" alt="image" src="https://github.com/user-attachments/assets/9460f529-2525-424e-93db-2b652d378d04">
