@@ -6,7 +6,7 @@ export function notifyUser(message: string, duration?: number) {
     userFeedbackElement.innerHTML = message;
     if (duration) {
         setTimeout(() => {
-            userFeedbackElement.innerHTML = "--";
+            userFeedbackElement.innerHTML = "";
         }, duration);
     }
 }

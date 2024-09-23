@@ -37,14 +37,17 @@ const connectButton = document.getElementById(
     "connectButton"
 ) as HTMLButtonElement;
 
-connectButton.addEventListener("click", connect);
+connectButton.addEventListener("click", () => {
+    connect();
+    connectButton.blur();
+});
 
 (document.getElementById("loadAlgs") as HTMLButtonElement).addEventListener(
     "click",
     () => {
         const isSuccess = loadAlgsFromInput();
         if (isSuccess) {
-            connectButton.hidden = false;
+            connectButton.disabled = false;
         }
     }
 );

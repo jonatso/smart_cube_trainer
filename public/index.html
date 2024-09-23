@@ -1,35 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Cube Trainer</title>
-</head>
-<body>
-    <h1>Smart Cube Trainer</h1>
-    <script type="module" src="bundle.js"></script>
-    <dialog open>
-        <p>Use Chrome on macOS, Windows and Android.
-            You need to enable chrome://flags/#enable-experimental-web-platform-features flag in browser settings.
-            <br />
-            Use Bluefy on iOS/iPadOS.
-            You need to turn on Enable BLE Advertisements option in browser settings.
-            <br />
-            Insert algs, one line each. Press load algs and then connect cube! 🤠</p>
-        <form method="dialog">
-          <button>OK</button>
-        </form>
-      </dialog>
-    <canvas id="cubeView" width="400" height="480"></canvas>
-    
-    <br />
-    <button id="connectButton" hidden>Connect</button>
-    <button id="loadAlgs">Load algs</button>
-    <p id="userFeedback">
-        --
-    </p>
-    
-    <textarea type="text" id="algsInput" placeholder="Enter algorithms here" style="height: 300px; width: 209px;"></textarea> 
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+        />
+        <title>Smart Cube Trainer</title>
+    </head>
+    <body>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <p class="navbar-item">
+                        <strong class="title is-5">Smart Cube Trainer</strong>
+                    </p>
+                </div>
 
-</body>
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <button
+                            class="button is-primary"
+                            id="connectButton"
+                            disabled
+                        >
+                            <strong>Connect</strong>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="fixed-grid has-3-cols m-4">
+            <div class="grid">
+                <div class="cell">
+                    <textarea
+                        type="text"
+                        id="algsInput"
+                        placeholder="Enter algorithms here"
+                        rows="15"
+                        class="textarea"
+                    ></textarea>
+                    <button id="loadAlgs" class="button is-light mt-4">
+                        Load algs
+                    </button>
+                </div>
+                <div
+                    class="cell is-flex is-justify-content-center is-align-items-center"
+                >
+                    <canvas id="cubeView" width="400" height="480"></canvas>
+                </div>
+                <div class="cell">
+                    <dialog style="border: none; padding: 0; z-index: 10;" class="container" open>
+                        <article class="message is-info">
+                            <div class="message-header">
+                                <p>Important info</p>
+                                <form method="dialog">
+                                    <button class="delete"></button>
+                                </form>
+                            </div>
+                            <div class="message-body">
+                                <p>
+                                    Use Chrome on macOS, Windows and Android.
+                                    You need to enable
+                                    chrome://flags/#enable-experimental-web-platform-features
+                                    flag in browser settings.
+                                    <br />
+                                    Use Bluefy on iOS/iPadOS. You need to turn
+                                    on Enable BLE Advertisements option in
+                                    browser settings.
+                                    <br />
+                                    Insert algs, one line each. Press load algs
+                                    and then connect cube! 🤠
+                                </p>
+                            </div>
+                        </article>
+                    </dialog>
+                    <p id="userFeedback"></p>
+                </div>
+            </div>
+        </div>
+        <script type="module" src="bundle.js"></script>
+
+    </body>
 </html>

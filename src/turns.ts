@@ -221,7 +221,7 @@ export default {
     y,
     z,
     M,
-    E: (cube: number[][]) => E(cube),
+    E,
     S,
     r,
     u,

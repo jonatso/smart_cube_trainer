@@ -32,7 +32,10 @@ const loadAlgsFromInput = () => {
         notifyUser("No algs loaded, try again", 2000);
         return false;
     }
-    notifyUser(`${algDatabase.length} algs loaded`, 2000);
+    notifyUser(
+        `${algDatabase.length} algs loaded, time to connect cube!`,
+        2000
+    );
     return true;
 };
 
@@ -114,7 +117,7 @@ function clearAndDrawCurrentCube(cube: Cube) {
 function nextScramble(cube: Cube) {
     currentAlg = algDatabase[Math.floor(Math.random() * algDatabase.length)];
     setupAlg(cube, currentAlg, true);
-    notifyUser("--");
+    notifyUser("");
 }
 
 const canvas = document.getElementById("cubeView") as HTMLCanvasElement;
