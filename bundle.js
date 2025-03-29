@@ -10013,15 +10013,20 @@ document.getElementById("loadAlgs").addEventListener("click", () => {
         connectButton.disabled = false;
     }
 });
+const onNextAlg = () => (0, cube_1.nextScramble)(currentCube);
+const onResetAlg = () => {
+    if (cube_1.currentAlg) {
+        (0, cube_1.setupAlg)(currentCube, cube_1.currentAlg, false);
+        (0, notifyUser_1.notifyUser)(cube_1.currentAlg);
+    }
+};
+document.getElementById("nextAlg").addEventListener("click", onNextAlg);
+document.getElementById("resetAlg").addEventListener("click", onResetAlg);
 document.addEventListener("keydown", (e) => {
     if (e.code === "Enter")
-        (0, cube_1.nextScramble)(currentCube);
-    else if (e.code === "Space") {
-        if (cube_1.currentAlg) {
-            (0, cube_1.setupAlg)(currentCube, cube_1.currentAlg, false);
-            (0, notifyUser_1.notifyUser)(cube_1.currentAlg);
-        }
-    }
+        onNextAlg();
+    else if (e.code === "Space")
+        onResetAlg();
 });
 const currentCube = (0, cube_1.getNewCube)();
 (0, cube_1.draw)(currentCube);
