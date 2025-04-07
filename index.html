@@ -11,13 +11,18 @@
     </head>
     <body>
         <nav class="navbar" role="navigation" aria-label="main navigation">
-            <div id="navbarBasicExample" class="navbar-menu">
-                <div class="navbar-start">
-                    <p class="navbar-item">
-                        <strong class="title is-5">Smart Cube Trainer</strong>
-                    </p>
-                </div>
+            <div class="navbar-brand">
+                <a class="navbar-item" href="#">
+                    <strong class="title is-5">Smart Cube Trainer</strong>
+                </a>
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
 
+            <div id="navbarBasicExample" class="navbar-menu">
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <button
@@ -38,7 +43,7 @@
                     <textarea
                         type="text"
                         id="algsInput"
-                        placeholder="Enter algorithms here"
+                        placeholder="Enter algorithms here, one per line. Supports comments with # and //"
                         rows="15"
                         class="textarea"
                     ></textarea>
@@ -88,6 +93,15 @@
             </div>
         </div>
         <script type="module" src="bundle.js"></script>
-
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const burger = document.querySelector('.navbar-burger');
+                const menu = document.getElementById(burger.dataset.target);
+                burger.addEventListener('click', function() {
+                    burger.classList.toggle('is-active');
+                    menu.classList.toggle('is-active');
+                });
+            });
+        </script>
     </body>
 </html>
