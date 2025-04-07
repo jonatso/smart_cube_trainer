@@ -52,14 +52,28 @@ connectButton.addEventListener("click", () => {
     }
 );
 
-document.addEventListener("keydown", (e) => {
-    if (e.code === "Enter") nextScramble(currentCube);
-    else if (e.code === "Space") {
-        if (currentAlg) {
-            setupAlg(currentCube, currentAlg, false);
-            notifyUser(currentAlg);
-        }
+const onNextAlg = () => nextScramble(currentCube);
+
+const onResetAlg = () => {
+    if (currentAlg) {
+        setupAlg(currentCube, currentAlg, false);
+        notifyUser(currentAlg);
     }
+};
+
+(document.getElementById("nextAlg") as HTMLButtonElement).addEventListener(
+    "click",
+    onNextAlg
+);
+
+(document.getElementById("resetAlg") as HTMLButtonElement).addEventListener(
+    "click",
+    onResetAlg
+);
+
+document.addEventListener("keydown", (e) => {
+    if (e.code === "Enter") onNextAlg();
+    else if (e.code === "Space") onResetAlg();
 });
 
 const currentCube = getNewCube();
