@@ -10061,7 +10061,9 @@ const algsInputElement = document.getElementById("algsInput");
 const loadAlgsFromInput = () => {
     algDatabase = algsInputElement.value
         .split("\n")
-        .filter((s) => s.trim() != "");
+        .filter((s) => s.trim() != "")
+        .filter((s) => !s.trim().startsWith("//") && !s.trim().startsWith("#"))
+        .map((s) => s.split("//")[0].split("#")[0].trim());
     if (algDatabase.length == 0) {
         (0, notifyUser_1.notifyUser)("No algs loaded, try again", 2000);
         return false;
