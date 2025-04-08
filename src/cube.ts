@@ -45,7 +45,45 @@ const loadAlgsFromInput = () => {
 var currentAlg: string = "";
 
 const isSolved = (cube: Cube) =>
-    cube.every((face) => face.every((sticker) => sticker === face[0]));
+
+{
+    // check value of checkbox input to decide if ZBLS mode should be used
+    const isZBLSMode = (document.getElementById("isZBLSMode") as HTMLInputElement).checked;
+
+    if (isZBLSMode) {
+        console.warn(cube)
+        // we check everything that is not the last layer, but check the cross on the last layer
+        
+        // white face, cross pieces should be white
+        const hasTopFaceCross = [cube[0][1], cube[0][3], cube[0][5], cube[0][7]].every((sticker) => sticker === cube[0][8]);
+
+        if (!hasTopFaceCross) {
+            return false;
+        }
+
+        const bottomFaceSolidColour = cube[5].every((sticker) => sticker === cube[5][8]);
+
+        if (!bottomFaceSolidColour) {
+            return false;
+        }
+
+        // on the other four faces, the bottom six stickers (f2lStickers) should be the same
+        const hasSolidColour = cube.slice(1, 5).every((face) => {
+            const f2lStickers = face.slice(3);
+            return f2lStickers.every((sticker) => sticker === face[8]);
+        });
+
+        if (!hasSolidColour) {
+            return false;
+        }
+
+        return true;
+    }
+
+    // if not ZBLS mode, check if all stickers are the same on each face
+    return cube.every((face) => face.every((sticker) => sticker === face[4]));
+
+}
 
 function doAlg(cube: Cube, s: string) {
     let moves = s.trim().split(" "); //must be trimmed first for extra spaces that might cause trouble
