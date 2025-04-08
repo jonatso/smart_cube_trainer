@@ -9988,14 +9988,14 @@ const turns_1 = __importDefault(require("./turns"));
 const notifyUser_1 = require("./notifyUser");
 const gan_web_bluetooth_1 = require("gan-web-bluetooth");
 const connect = () => __awaiter(void 0, void 0, void 0, function* () {
-    var conn = yield (0, gan_web_bluetooth_1.connectGanCube)();
+    const conn = yield (0, gan_web_bluetooth_1.connectGanCube)();
     (0, notifyUser_1.notifyUser)("Connected to cube", 2000);
     (0, cube_1.nextScramble)(currentCube);
     conn.events$.subscribe((event) => {
-        if (event.type == "FACELETS") {
+        if (event.type === "FACELETS") {
             console.log("Cube facelets state", event.facelets);
         }
-        else if (event.type == "MOVE") {
+        else if (event.type === "MOVE") {
             const turn = ["U", "R", "F", "D", "L", "B"][event.face];
             (0, cube_1.doTurn)(currentCube, turns_1.default[turn], event.direction ? 3 : 1);
         }
@@ -10022,6 +10022,10 @@ const onResetAlg = () => {
 };
 document.getElementById("nextAlg").addEventListener("click", onNextAlg);
 document.getElementById("resetAlg").addEventListener("click", onResetAlg);
+document.getElementById("flipColours").addEventListener("click", () => {
+    (0, cube_1.flipColours)();
+    (0, cube_1.draw)(currentCube);
+});
 document.addEventListener("keydown", (e) => {
     if (e.code === "Enter")
         onNextAlg();
@@ -10037,7 +10041,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadAlgsFromInput = exports.currentAlg = exports.getNewCube = void 0;
+exports.flipColours = exports.loadAlgsFromInput = exports.currentAlg = exports.getNewCube = void 0;
 exports.doTurn = doTurn;
 exports.doAlg = doAlg;
 exports.setupAlg = setupAlg;
@@ -10056,15 +10060,15 @@ const clearCube = (cube) => {
     }
 };
 const colours = ["white", "green", "red", "blue", "orange", "yellow"];
-var algDatabase = [];
+let algDatabase = [];
 const algsInputElement = document.getElementById("algsInput");
 const loadAlgsFromInput = () => {
     algDatabase = algsInputElement.value
         .split("\n")
-        .filter((s) => s.trim() != "")
+        .filter((s) => s.trim() !== "")
         .filter((s) => !s.trim().startsWith("//") && !s.trim().startsWith("#"))
         .map((s) => s.split("//")[0].split("#")[0].trim());
-    if (algDatabase.length == 0) {
+    if (algDatabase.length === 0) {
         (0, notifyUser_1.notifyUser)("No algs loaded, try again", 2000);
         return false;
     }
@@ -10072,15 +10076,48 @@ const loadAlgsFromInput = () => {
     return true;
 };
 exports.loadAlgsFromInput = loadAlgsFromInput;
-var currentAlg = "";
+let currentAlg = "";
 exports.currentAlg = currentAlg;
-const isSolved = (cube) => cube.every((face) => face.every((sticker) => sticker === face[0]));
+const isSolved = (cube) => {
+    // check value of checkbox input to decide if ZBLS mode should be used
+    const isZBLSMode = document.getElementById("isZBLSMode")
+        .checked;
+    if (isZBLSMode) {
+        console.warn(cube);
+        // we check everything that is not the last layer, but check the cross on the last layer
+        // white face, cross pieces should be white
+        const hasTopFaceCross = [
+            cube[0][1],
+            cube[0][3],
+            cube[0][5],
+            cube[0][7],
+        ].every((sticker) => sticker === cube[0][8]);
+        if (!hasTopFaceCross) {
+            return false;
+        }
+        const bottomFaceSolidColour = cube[5].every((sticker) => sticker === cube[5][8]);
+        if (!bottomFaceSolidColour) {
+            return false;
+        }
+        // on the other four faces, the bottom six stickers (f2lStickers) should be the same
+        const hasSolidColour = cube.slice(1, 5).every((face) => {
+            const f2lStickers = face.slice(3);
+            return f2lStickers.every((sticker) => sticker === face[8]);
+        });
+        if (!hasSolidColour) {
+            return false;
+        }
+        return true;
+    }
+    // if not ZBLS mode, check if all stickers are the same on each face
+    return cube.every((face) => face.every((sticker) => sticker === face[4]));
+};
 function doAlg(cube, s) {
-    let moves = s.trim().split(" "); //must be trimmed first for extra spaces that might cause trouble
+    const moves = s.trim().split(" "); //must be trimmed first for extra spaces that might cause trouble
     let move;
     for (const i in moves) {
         move = moves[i];
-        if (move == "")
+        if (move === "")
             continue;
         const turn = move[0];
         const turnFunction = turns_1.default[turn];
@@ -10088,7 +10125,7 @@ function doAlg(cube, s) {
         if (!move[1])
             continue; //only one if no ', 2 or 3
         turnFunction(cube); //do second one
-        if (move[1] == "2")
+        if (move[1] === "2")
             continue; //stop if 2, ' or 3 should do another
         turnFunction(cube);
     }
@@ -10113,11 +10150,11 @@ function setupAlg(cube, s, randomAufAndRot) {
         randomRot(cube);
         randomAUF(cube);
     }
-    let moves = s.trim().split(" "); //must be trimmed first for extra spaces that might cause trouble
+    const moves = s.trim().split(" "); //must be trimmed first for extra spaces that might cause trouble
     let move;
     for (let i = 0; i < moves.length; i++) {
         move = moves[moves.length - (i + 1)];
-        if (move == "")
+        if (move === "")
             continue;
         const turn = move[0];
         const turnFunction = turns_1.default[turn];
@@ -10127,12 +10164,11 @@ function setupAlg(cube, s, randomAufAndRot) {
             turnFunction(cube);
             continue;
         }
-        if (move[1] == "'") {
+        if (move[1] === "'") {
             continue;
         }
-        if (move[1] == "2") {
+        if (move[1] === "2") {
             turnFunction(cube);
-            continue;
         }
     }
     if (randomAufAndRot) {
@@ -10160,7 +10196,7 @@ function drawSticker(x, y, colourChar) {
 function drawGridLines() {
     ctx.lineWidth = 6;
     for (let i = 0; i <= canvas.height; i += stickerSize) {
-        if (i == stickerSize * 3) {
+        if (i === stickerSize * 3) {
             //no line between duplicate sticker
             ctx.moveTo(stickerSize, i);
             ctx.lineTo(canvas.width - stickerSize, i);
@@ -10232,6 +10268,15 @@ function draw(cube) {
     drawSticker(4, 5, cube[2][6]);
     drawGridLines();
 }
+const flipColours = () => {
+    [colours[0], colours[1], colours[3], colours[5]] = [
+        colours[5],
+        colours[3],
+        colours[1],
+        colours[0],
+    ];
+};
+exports.flipColours = flipColours;
 
 },{"./notifyUser":229,"./turns":230}],229:[function(require,module,exports){
 "use strict";
@@ -10251,7 +10296,7 @@ function notifyUser(message, duration) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function arrayMove(arr, fromIndex, toIndex) {
-    var element = arr[fromIndex];
+    const element = arr[fromIndex];
     arr.splice(fromIndex, 1);
     arr.splice(toIndex, 0, element);
 }
@@ -10270,13 +10315,12 @@ function rotateFace(cube, faceIndex, dir) {
 function R(cube) {
     rotateFace(cube, 2, true);
     for (let i = 0; i < 3; i++) {
-        [cube[1][i + 2], cube[0][i + 2], cube[3][(i + 6) % 8], cube[5][i + 2]] =
-            [
-                cube[5][i + 2],
-                cube[1][i + 2],
-                cube[0][i + 2],
-                cube[3][(i + 6) % 8],
-            ];
+        [cube[1][i + 2], cube[0][i + 2], cube[3][(i + 6) % 8], cube[5][i + 2]] = [
+            cube[5][i + 2],
+            cube[1][i + 2],
+            cube[0][i + 2],
+            cube[3][(i + 6) % 8],
+        ];
     }
 }
 function U(cube) {

@@ -16,10 +16,10 @@
                     <strong class="title is-5">Smart Cube Trainer</strong>
                 </p>
                 <div class="navbar-item">
-                <button class="button is-primary" id="connectButton" disabled>
-                    <strong>Connect</strong>
-                </button>
-            </div>
+                    <button class="button is-primary" id="connectButton" disabled>
+                        <strong>Connect</strong>
+                    </button>
+                </div>
             </div>
 
         </div>
@@ -40,6 +40,13 @@
                 <button id="nextAlg" class="button is-light mt-4">
                     Next alg
                 </button>
+                <button id="flipColours" class="button is-light mt-4">
+                    Toggle y2
+                </button>
+                <label class="checkbox mt-4">
+                    <input type="checkbox" id="isZBLSMode"/>
+                    ZBLS mode
+                </label>
             </div>
             <div class="cell is-flex is-justify-content-center is-align-items-center">
                 <canvas id="cubeView" width="400" height="480"></canvas>
