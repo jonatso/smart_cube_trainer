@@ -9,21 +9,21 @@ import {
 	flipColours,
 } from "./cube";
 import turns from "./turns";
-import { turnsEnum } from "./turns";
+import type { turnsEnum } from "./turns";
 import { notifyUser } from "./notifyUser";
 
 import { connectGanCube } from "gan-web-bluetooth";
 
 const connect = async () => {
-	var conn = await connectGanCube();
+	const conn = await connectGanCube();
 
 	notifyUser("Connected to cube", 2000);
 	nextScramble(currentCube);
 
 	conn.events$.subscribe((event) => {
-		if (event.type == "FACELETS") {
+		if (event.type === "FACELETS") {
 			console.log("Cube facelets state", event.facelets);
-		} else if (event.type == "MOVE") {
+		} else if (event.type === "MOVE") {
 			const turn = ["U", "R", "F", "D", "L", "B"][event.face] as turnsEnum;
 			doTurn(currentCube, turns[turn], event.direction ? 3 : 1);
 		}

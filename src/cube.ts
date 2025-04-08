@@ -1,5 +1,5 @@
 import turns from "./turns";
-import { turnsEnum } from "./turns";
+import type { turnsEnum } from "./turns";
 import { notifyUser } from "./notifyUser";
 
 type Cube = number[][];
@@ -15,9 +15,9 @@ const clearCube = (cube: Cube) => {
 	}
 };
 
-let colours = ["white", "green", "red", "blue", "orange", "yellow"];
+const colours = ["white", "green", "red", "blue", "orange", "yellow"];
 
-var algDatabase: string[] = [];
+let algDatabase: string[] = [];
 
 const algsInputElement = document.getElementById(
 	"algsInput",
@@ -26,11 +26,11 @@ const algsInputElement = document.getElementById(
 const loadAlgsFromInput = () => {
 	algDatabase = algsInputElement.value
 		.split("\n")
-		.filter((s) => s.trim() != "")
+		.filter((s) => s.trim() !== "")
 		.filter((s) => !s.trim().startsWith("//") && !s.trim().startsWith("#"))
 		.map((s) => s.split("//")[0].split("#")[0].trim());
 
-	if (algDatabase.length == 0) {
+	if (algDatabase.length === 0) {
 		notifyUser("No algs loaded, try again", 2000);
 		return false;
 	}
@@ -38,7 +38,7 @@ const loadAlgsFromInput = () => {
 	return true;
 };
 
-var currentAlg: string = "";
+let currentAlg = "";
 
 const isSolved = (cube: Cube) => {
 	// check value of checkbox input to decide if ZBLS mode should be used
@@ -87,17 +87,17 @@ const isSolved = (cube: Cube) => {
 };
 
 function doAlg(cube: Cube, s: string) {
-	let moves = s.trim().split(" "); //must be trimmed first for extra spaces that might cause trouble
-	let move;
+	const moves = s.trim().split(" "); //must be trimmed first for extra spaces that might cause trouble
+	let move: string;
 	for (const i in moves) {
 		move = moves[i];
-		if (move == "") continue;
+		if (move === "") continue;
 		const turn = move[0] as turnsEnum;
 		const turnFunction = turns[turn];
 		turnFunction(cube);
 		if (!move[1]) continue; //only one if no ', 2 or 3
 		turnFunction(cube); //do second one
-		if (move[1] == "2") continue; //stop if 2, ' or 3 should do another
+		if (move[1] === "2") continue; //stop if 2, ' or 3 should do another
 		turnFunction(cube);
 	}
 	draw(cube);
@@ -123,11 +123,11 @@ function setupAlg(cube: Cube, s: string, randomAufAndRot: boolean) {
 		randomRot(cube);
 		randomAUF(cube);
 	}
-	let moves = s.trim().split(" "); //must be trimmed first for extra spaces that might cause trouble
-	let move;
+	const moves = s.trim().split(" "); //must be trimmed first for extra spaces that might cause trouble
+	let move: string;
 	for (let i = 0; i < moves.length; i++) {
 		move = moves[moves.length - (i + 1)];
-		if (move == "") continue;
+		if (move === "") continue;
 		const turn = move[0] as turnsEnum;
 		const turnFunction = turns[turn];
 		turnFunction(cube);
@@ -137,12 +137,11 @@ function setupAlg(cube: Cube, s: string, randomAufAndRot: boolean) {
 			turnFunction(cube);
 			continue;
 		}
-		if (move[1] == "'") {
+		if (move[1] === "'") {
 			continue;
 		}
-		if (move[1] == "2") {
+		if (move[1] === "2") {
 			turnFunction(cube);
-			continue;
 		}
 	}
 	if (randomAufAndRot) {
@@ -177,7 +176,7 @@ function drawSticker(x: number, y: number, colourChar: number) {
 function drawGridLines() {
 	ctx.lineWidth = 6;
 	for (let i = 0; i <= canvas.height; i += stickerSize) {
-		if (i == stickerSize * 3) {
+		if (i === stickerSize * 3) {
 			//no line between duplicate sticker
 			ctx.moveTo(stickerSize, i);
 			ctx.lineTo(canvas.width - stickerSize, i);
