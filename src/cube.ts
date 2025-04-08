@@ -8,14 +8,41 @@ const getNewCube: () => Cube = () =>
 	Array.from({ length: 6 }, (_, i) => Array(9).fill(i));
 
 const clearCube = (cube: Cube) => {
+	const onlyShowZBLSSTickers = (
+		document.getElementById("onlyShowZBLSSTickers") as HTMLInputElement
+	).checked;
+
 	for (let i = 0; i < 6; i++) {
 		for (let j = 0; j < 9; j++) {
 			cube[i][j] = i;
 		}
 	}
+
+	if (onlyShowZBLSSTickers) {
+		cube[0][0] = 6;
+		cube[0][2] = 6;
+		cube[0][4] = 6;
+		cube[0][6] = 6;
+
+		cube[1][0] = 6;
+		cube[1][1] = 6;
+		cube[1][2] = 6;
+
+		cube[2][0] = 6;
+		cube[2][1] = 6;
+		cube[2][2] = 6;
+
+		cube[3][0] = 6;
+		cube[3][1] = 6;
+		cube[3][2] = 6;
+
+		cube[4][0] = 6;
+		cube[4][1] = 6;
+		cube[4][2] = 6;
+	}
 };
 
-const colours = ["white", "green", "red", "blue", "orange", "yellow"];
+const colours = ["white", "green", "red", "blue", "orange", "yellow", "grey"];
 
 let algDatabase: string[] = [];
 
@@ -46,7 +73,6 @@ const isSolved = (cube: Cube) => {
 		.checked;
 
 	if (isZBLSMode) {
-		console.warn(cube);
 		// we check everything that is not the last layer, but check the cross on the last layer
 
 		// white face, cross pieces should be white
